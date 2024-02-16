@@ -1,0 +1,161 @@
+{% load static %}
+{% block content %}
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>register</title>
+    <style>
+        body {
+            font-family: "Jost", sans-serif;
+            background-color: #2f323b;
+        }
+
+        .container {
+            position: relative;
+            top: 1%;
+            width: 1000px;
+            margin: 0 auto;
+            padding: 40px;
+            border-radius: 10px;
+        }
+
+        .heading {
+            margin: 10px;
+            font-size: 20px;
+            text-align: left;
+            color: #fff;
+            border-bottom: solid 1px #ffc107;
+        }
+
+        p {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        td {
+            color: #fff;
+            padding-top: 25px;
+            padding:20px;
+        }
+
+        input,
+        select {
+            color: #fff;
+            width: 100%;
+            padding: 10px;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #6c757d;
+            border-radius: 1px;
+        }
+
+        .button {
+            position: relative;
+            left: 25%;
+            top:15px;
+            width: 50%;
+            background-color: #ffc107;
+            color: #000;
+            border: none;
+            font-size: 20px;
+            border-radius: 2px;
+        }
+        .back{
+            position: relative;
+            top:10px;
+            left:20px;
+            font-size: 40px;
+            color: #ffc107;
+        }
+    </style>
+
+</head>
+
+<body background="6.png">
+    <a href="../staff" class="back"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+    {% for i in detail %}
+<div class="container">
+    <form action="../staffedit" method="post">
+        {% csrf_token %}
+        <input type="hidden"  name="id"  value="{{i.id}}">
+        <div class="heading">
+            <h1>Edit Staff</h1>
+        </div>
+        <table>
+            <tr>
+                <td width=50%>
+                    First Name:
+                    <input type="text" placeholder="First Name" name="fname" value="{{ i.S_Fname }}" required>
+                </td>
+                <td>
+                    Contact:
+                    <input type="tel" placeholder="Phone Number" pattern="[0-9]{10}" maxlength="10" name="phno" value="{{ i.S_Phno }}" required>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Middle Name:
+                    <input type="text" placeholder="Middle Name" name="mname" value="{{ i.S_Mname }}" required>
+                </td>
+                <td>
+                    State:
+                    <input type="text" placeholder="District Name" name="state" value="{{ i.S_State }}" required>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Last Name:
+                    <input type="text" placeholder="Last Name" name="lname" value="{{ i.S_Lname }}" required>
+                </td>
+                <td>
+                    City:
+                    <input type="text" placeholder="City Name" name="city" value="{{ i.S_City }}" required>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Gender:
+                    <input type="text" placeholder="Gender" name="gender" value="{{ i.S_Gender }}" required>
+                </td>
+                <td>
+                    Pin:
+                    <input type="text" placeholder="Pin Code" pattern="[0-9]{6}" name="pin" value="{{ i.S_Pin }}" required>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Start Date:
+                    <input type="date" placeholder="Start Date" name="date" value="{{ i.S_Startdate }}" required>
+                </td>
+                <td>
+                    Email:
+                    <input type="email" placeholder="Email" name="email"  required>
+                </td>
+            </tr>
+            <tr>
+                <td width=50%>
+                    Job type:
+                    <select name="type" required>
+                        <option value="Staff" {% if i.job_type == 'Staff' %}selected{% endif %}>Staff</option>
+                    </select>
+                </td>
+                <td>
+                    Password:
+                    <input type="password" placeholder="Password" name="password"  required>
+                </td>
+            </tr>
+        </table>
+        <input type="submit" name="Register" value="Update" class="button">
+    </form>
+</div>
+{% endfor %}
+
+</body>
+
+</html>
+{% endblock %}

@@ -1,0 +1,158 @@
+{% load static %}
+{% block content %}
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>register</title>
+    <style>
+        body {
+            font-family: "Jost", sans-serif;
+            background-color: #2f323b;
+        }
+
+        .container {
+            position: relative;
+            top: 1%;
+            width: 1000px;
+            margin: 0 auto;
+            padding: 40px;
+            border-radius: 10px;
+        }
+
+        .heading {
+            margin: 10px;
+            font-size: 20px;
+            text-align: left;
+            color: #fff;
+            border-bottom: solid 1px #ffc107;
+        }
+
+        p {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        td {
+            color: #fff;
+            padding-top: 25px;
+            padding:20px;
+        }
+
+        input,
+        select {
+            color: #fff;
+            width: 100%;
+            padding: 10px;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #6c757d;
+            border-radius: 1px;
+        }
+
+        .button {
+            position: relative;
+            left: 25%;
+            top:15px;
+            width: 50%;
+            background-color: #ffc107;
+            color: #000;
+            border: none;
+            font-size: 20px;
+            border-radius: 2px;
+        }
+        .back{
+            position: relative;
+            top:10px;
+            left:20px;
+            font-size: 40px;
+            color: #ffc107;
+        }
+    </style>
+
+</head>
+
+<body background="6.png">
+    <a href="staff" class="back"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+
+    <div class="container">
+        <form action="staffregist" method="post">
+            {% csrf_token %}
+            <div class="heading">
+                <h1>Staff Registration</h1>
+            </div>
+            <table>
+                <tr>
+                    <td width=50%>
+                        First Name:
+                        <input type="text" placeholder="First Name" name="fname" required>
+                    </td>
+                    <td>
+                        Contact:
+                        <input type="tel" placeholder="Phone Number" pattern="[0-9]{10}" maxlength="10" name="phno"
+                            required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Middle Name:
+                        <input type="text" placeholder="Middle Name" name="mname" required>
+                    </td>
+                    <td>
+                        State:
+                        <input type="text" placeholder="District Name" name="state" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Last Name:
+                        <input type="text" placeholder="Last Name" name="lname" required>
+                    </td>
+                    <td>
+                        City:
+                        <input type="text" placeholder="City Name" name="city" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" placeholder="Gender" name="gender" required>
+                    </td>
+                    <td>
+                        Pin:
+                        <input type="text" placeholder="Pin Code" pattern="[0-9]{6}" name="pin" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Start Date:
+                        <input type="date" placeholder="Start Date" name="date" required>
+                    </td>
+                    <td>
+                        Email:
+                        <input type="email" placeholder="Email" pattern="[a-z0-9._%+-]+@[a-z]+\.[a-z]{2,4}" name="email" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td width=50%>
+                        Job type:
+                        <select name="type" required>
+                            <option value="Staff">staff</option>
+                        </select>
+                    </td>
+                    <td>
+                        Password:
+                        <input type="password" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" name="password" required>
+                    </td>
+                </tr>
+            </table>
+            <input type="submit" name="Register" value="register now" class="button">
+        </form>
+    </div>
+</body>
+
+</html>
+{% endblock %}

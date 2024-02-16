@@ -1,0 +1,126 @@
+{% load static %}
+{% block content %}
+{% include 'header.html'%}
+<main>
+    <section class="contact-section">
+        <div class="container">
+            <div class="col-12">
+                <h2 class="contact-title">Register</h2>
+            </div>
+            <div class="col-lg-8">
+                <form class="form-contact contact_form" action="regist" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <p style="color:white">Enter First Name:</p>
+                                <input class="form-control valid" name="fname" id="name" type="text"
+                                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter your first name'"
+                                    placeholder="Enter your First name" style="color:white;" required>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <p style="color:white">Enter State:</p>
+                                <input class="form-control valid" name="state" id="name" type="text"
+                                onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter your state'"
+                                placeholder="Enter your state" style="color:white;" required>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <p style="color:white">Enter Middle Name:</p>
+                                <input class="form-control valid" name="mname" id="name" maxlength="10" type="tel"
+                                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter your middel name'"
+                                    placeholder="Enter your Middle Name" style="color:white;" required>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <p style="color:white">Enter City:</p>
+
+                                <input class="form-control valid" name="city" id="name" type="text"
+                                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter your city'"
+                                    placeholder="Enter your city" style="color:white;" required>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <p style="color:white">Enter Last Name:</p>
+                                <input class="form-control valid" name="lname" id="name" type="text"
+                                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter your last name'"
+                                    placeholder="Enter your Last Name" style="color:white;"required>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <p style="color:white">Enter Pin:</p>
+
+                                <input class="form-control valid" name="pin" id="name" pattern="[0-9]{6}" type="tel"
+                                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter your pin'"
+                                    placeholder="Enter your pin code" style="color:white;"required>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <p style="color:white">Enter Phone Number:</p>
+                                <input class="form-control valid" name="phno" id="name" type="text" pattern="[0-9]{10}"
+                                    maxlength="10"
+                                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter your name'"
+                                    placeholder="Enter your Phone Number" style="color:white;"required>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <p style="color:white">Profile Photo:</p>
+                                <input class="form-control valid" name="img" id="img" type="file" style="color: #777; padding-top: 10px;"required>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <p style="color:white">Enter Date Of Birth:</p>
+
+                                <input class="form-control valid" name="dob" id="date" type="date"
+                                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter date of birth'"
+                                    placeholder="Enter your date of birth" style="color:white;"required>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <p style="color:white">Enter Email:</p>
+                                <input class="form-control valid" name="email" id="name" type="email" pattern="[a-z0-9._%+-]+@[a-z]+\.[a-z]{2,4}"
+                                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter your email'"
+                                    placeholder="Enter your email" style="color:white;"required>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <p style="color:white">Enter Gender:</p>
+                                <input class="form-control" name="gender" id="subject" type="text"
+                                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter gender'"
+                                    placeholder="Enter your gender" style="color:white;"required>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <p style="color:white">Enter Password:</p>
+                                <input class="form-control" name="password" id="subject" type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter password'"
+                                    placeholder="Enter your password" style="color:white;"required>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" style="color:rgba(255, 255, 255, 0.8); position: relative; top:10px">(At least one digit, one
+                                            lowercase, one uppercase letter, and 8 or more characters)</span>
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="form-group mt-3">
+                            <button type="submit" class="button button-contactForm btn_1">Send</button>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+</main>
+{% include 'footer.html' %}
+{% endblock %}

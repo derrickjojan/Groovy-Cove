@@ -1,0 +1,236 @@
+{% load static %}
+{% block content %}
+{% include 'header.html' %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+        body {
+            font-family: "Jost", sans-serif;
+        }
+
+        .cont {
+            margin: 0 auto;
+            margin-top: 20px;
+            width: 95%;
+            border-radius: 8px;
+        }
+
+        .slot {
+            justify-content: center;
+        }
+
+        .info {
+            display: flex;
+            padding: 20px;
+            justify-content: space-between;
+            border: 1px solid #ffc107;
+            margin-bottom: 30px;
+        }
+
+        .info h1 {
+            color: #ccc;
+            font-size: 28px;
+            margin-top: 10px;
+            margin-right: 50px;
+            margin-left: 30px;
+        }
+
+        .info p {
+            font-size: 18px;
+            color: #ccc;
+            margin-top: 20px;
+            margin-right: 30px;
+        }
+
+        .info a {
+            margin-top: 20px;
+        }
+
+        .back {
+            position: absolute;
+            top: 30px;
+            left: 20px;
+            font-size: 40px;
+            color: #ffc107;
+        }
+
+        .renew-link,
+        .cancel-link,
+        .print-report,
+        .active,
+        .expired,
+        .return {
+            position: relative;
+            display: inline-block;
+            font-size: 20px; 
+        }
+        .cancel-link{
+            position: relative;
+        }
+        .return:hover:before,
+        .renew-link:hover:before,
+        .cancel-link:hover:before,
+        .print-report:hover:before,
+        .active:hover:before,
+        .expired:hover:before {
+            content: "Renew";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .print-report:hover:before {
+            content: "Print Report";
+        }
+
+        .active:hover:before {
+            content: "Active";
+        }
+
+        .expired:hover:before {
+            content: "Expired";
+        }
+        .cancel-link:hover:before {
+            content: "Cancel";
+        }
+        .return:hover:before {
+            content: "Returned";
+        }
+        
+        .write-review-btn {
+            position: fixed;
+            bottom: 0px;
+            right: 0px;
+            background-color: #E5BF4A;
+            color: #000;
+            border: 1px solid #E5BF4A;
+            padding: 30px 10px;
+            font-size: 30px;
+            clip-path: polygon(0% 0%, 85% 0%, 100% 90%, 0% 100%, 0% 100%);
+            writing-mode: vertical-rl;
+            /* vertical writing mode */
+            transform: rotate(180deg);
+            /* rotate the button */
+        }
+
+
+        /* Styles for the Write a Review button on hover */
+        .write-review-btn:hover {
+            background-color: #E5BF4A;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="cont">
+        <div class="slot">
+            {%if data %}
+            <h2 style="color: white; padding: 10px;">Plan's</h2> <!-- Add Plans heading -->
+            {% else %}
+            <h2 style="color: white; padding: 40px;">No Existing Plan's or Resevered Events To See!</h2>
+            {% endif %}
+            {% for item in data %}
+            {% if item.Plan_name %}
+            <div class="info">
+                <h1>Plan: {{ item.Plan_name }}</h1>
+                <p>Payment Date (Booked Date) : {{ item.Payment_date }}</p>
+                <p>Validity : {{ item.valid }} Entries / Day</p>
+                <p>Amount: {{ item.price }}</p>
+                
+                {% if item.id == 8 or item.id == 9 or item.id == 10 %}
+                {% if item.status == 2 %}
+                <p class="return"><i class="fa-solid fa-circle-chevron-down"></i></p>
+                <div>
+                {% elif item.status == 1 %}
+                <div>
+                <p class="active"><i class="fa-solid fa-circle-chevron-up"></i></p>
+                <p class="cancel-link">
+                    <a href="plancancel/{{item.plan_id}}" onclick="confirmpayCancellation(event, '{{item.plan_id}}')"><i class="fa-solid fa-xmark"></i></a>
+                </p>
+                {% elif item.status == 0 %}
+                <div>
+                <p class="expired"><i class="fa-solid fa-circle-chevron-down"></i></p>
+                {% endif %}
+                {% endif %}
+                <p class="renew-link">
+                <a href="planpay/{{item.id}}" ><i class="fas fa-sync-alt"></i></a>
+                </p>
+                <p class="print-report">
+                    <a href="preceipt/{{item.plan_id}}"><i class="fas fa-save"></i></a>
+                </p>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {%if data %}
+            <h2 style="color: white; padding: 10px;">Event's</h2> <!-- Add Events heading -->
+            {% endif %}
+            {% for item in data %}
+            {% if item.Event_name %}
+            <div class="info">
+                <h1>Event: {{ item.Event_name }}</h1>
+                <p>Payment Date (Booked Date) : {{ item.Payment_date }}</p>
+                <p>Booked From - To: {{ item.booked_from }} - {{ item.booked_to }}</p>
+                <p>Amount: {{ item.price }}</p>
+                {% if item.status == 2 %}
+                <p>Refunded Amount: {{ item.refund_amount }}</p>
+                <p class="return"><i class="fa-solid fa-circle-chevron-down"></i></p>
+                <div>
+                {% elif item.status == 0 %}
+                <div>
+                <p class="expired"><i class="fa-solid fa-circle-chevron-down"></i></p>
+                {% elif item.status == 1 %}
+                <div>
+                <p class="active"><i class="fa-solid fa-circle-chevron-up"></i></p>
+                <p class="cancel-link">
+                    <a href="eventcancel/{{item.id}}" onclick="confirmCancellation(event, '{{item.id}}')"><i class="fa-solid fa-xmark"></i></a>
+                </p>
+                {% endif %}
+                <p class="print-report">
+                    <a href="receipt/{{item.id}}"><i class="fas fa-save"></i></a>
+                </p>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <a href="feedback" class="write-review-btn">Write a Review</a>
+</body>
+</html>
+<script>
+    function confirmCancellation(event, itemId) {
+        event.preventDefault(); // Prevent the default action of following the link
+        
+        if (confirm("Are you sure you want to cancel this booking? You will only receive 10% refund.")) {
+            // If user confirms, redirect to the cancellation URL
+            window.location.href = "eventcancel/" + itemId;
+        } else {
+            // If user cancels, do nothing
+            return false;
+        }
+    }
+    function confirmpayCancellation(event, itemId) {
+        event.preventDefault(); // Prevent the default action of following the link
+        
+        if (confirm("Are you sure you want to cancel this plan?")) {
+            // If user confirms, redirect to the cancellation URL
+            window.location.href = "plancancel/" + itemId;
+        } else {
+            // If user cancels, do nothing
+            return false;
+        }
+    }
+    </script>
+{% endblock %}

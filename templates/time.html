@@ -1,0 +1,324 @@
+{% load static %}
+{% block content %}
+{% include 'header.html'%}
+
+<head>
+    <style>
+        .tickets-heading h1 {
+            color:white;
+            padding: 40px 0 20px;
+            text-align: center;
+            font-size: 60px;
+        }
+        .tickets-view{
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+
+        }
+        .tickets-container {
+            border-radius: 20px;
+            display: inline-block;
+            margin-right: 50px;
+            padding: 20px; 
+            margin-bottom: 30px;
+            border: 1px solid #ffc107;
+            background-color: rgba(255, 255, 255, 0.05);
+            }
+        .tickets-container h2{
+            padding: 10px 0 0px;
+            color:#ffc107
+
+        }
+
+        .tickets-container p{
+            color:white;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 25px;
+        }
+
+        .tickets-table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .tickets-table th,
+        .tickets-table td {
+            color:white;
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #595b5c;
+        }
+
+        .tickets-table th {
+            background-color: red;
+        }
+
+        .tickets-container h2 {
+            text-align: center;
+        }
+
+        .tickets-table tr:first-child td {
+            padding-left: 80px;
+            text-align: center;
+            border-bottom: none;
+            /* Center-align the content of the first <td> in each <tr> */
+        }
+
+
+        .package-heading h1 {
+            color:white;
+            padding: 40px 0 20px;
+            text-align: center;
+            font-size: 60px;
+        }
+
+        .package-container {
+            border-radius: 20px;
+            display: inline-block;
+            margin-right: 50px;
+            padding: 20px; 
+            margin-bottom: 30px;
+            border: 1px solid #ffc107;
+            background-color: rgba(255, 255, 255, 0.05);
+            }
+        .package-container h2{
+            padding: 15px 0 20px;
+            color:#ffc107
+
+        }
+        .package-view{
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+
+        }
+        .package-container p{
+            color:white;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 25px;
+        }
+
+        .package-table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .package-table th,
+        .package-table td {
+            color:white;
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #595b5c;
+        }
+
+        .package-table th {
+            background-color: red;
+        }
+
+        .package-container h2 {
+            text-align: center;
+        }
+        
+
+
+
+
+        .membership-heading h1 {
+            color:white;
+            padding: 40px 0 40px;
+            text-align: center;
+            font-size: 60px;
+        }
+
+        .membership-container {
+            border-radius: 20px;
+            display: inline-block;
+            margin-right: 50px;
+            padding: 20px; 
+            margin-bottom: 30px;
+            border: 1px solid #ffc107;
+            background-color: rgba(255, 255, 255, 0.05);
+            }
+        .membership-container h2{
+            padding: 15px 0 20px;
+            color:#ffc107
+
+        }
+        .membership-view{
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+
+        }
+        .membership-container p{
+            color:white;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 25px;
+        }
+
+        .membership-table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .membership-table th,
+        .membership-table td {
+            color:white;
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #595b5c;
+        }
+
+        .membership-table th {
+            background-color: red;
+        }
+
+        .membership-container h2 {
+            text-align: center;
+        }
+        /* For Tickets */
+.tickets-container {
+    transition: transform 0.3s; /* Add transition for smooth effect */
+}
+
+.tickets-container:hover {
+    transform: scale(1.10); /* Zoom in by 5% on hover */
+}
+
+/* For Packages */
+.package-container {
+    transition: transform 0.3s; /* Add transition for smooth effect */
+}
+
+.package-container:hover {
+    transform: scale(1.10); /* Zoom in by 5% on hover */
+}
+
+/* For Memberships */
+.membership-container {
+    transition: transform 0.3s; /* Add transition for smooth effect */
+}
+
+.membership-container:hover {
+    transform: scale(1.10); /* Zoom in by 5% on hover */
+}
+
+    </style>
+</head>
+<main>
+    <div class="tickets-heading">
+        <h1>Tickets</h1>
+    </div>
+    <section class="tickets-section">
+        <div class="tickets-view">
+            {% for message in messages %}
+            <script>
+                window.onload = function() {
+                    alert("{{ message }}");
+                };
+            </script>
+            {% endfor %}
+            {% for result in results %}
+            <div class="tickets-container">
+                <a href="../planpay/{{ result.plan.id }}">
+                <h2>{{ result.plan.P_Name }}</h2>
+                <p>Cost: Rs.{{ result.price }}/-</p>
+                <table class="tickets-table">
+                    <colgroup>
+                        <col style="width: 300px;">
+                        <col style="width: 70px;">
+                    </colgroup>
+                    {% for item in result.description_list %}
+                    {% if item %}
+                    <tr>
+                        {% for cell in item %}
+                        <td>{{ cell }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                    <tr>
+                        <td>Valid</td>
+                        <td>{{ result.valid }} Entry</td>
+                    </tr>
+                </table>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    <div class="package-heading">
+        <h1>Packages</h1>
+    </div>
+    <section class="package-section">
+        <div class="package-view">
+            {% for result in package %}
+            <div class="package-container">
+                <a href="../planpay/{{ result.plan.id }}">
+                <h2>{{ result.plan.P_Name }}</h2>
+                <p>Cost: Rs.{{ result.price }}/-</p>
+                <table class="package-table">
+                    <colgroup>
+                        <col style="width: 300px;">
+                        <col style="width: 90px;">
+                    </colgroup>
+                    {% for item in result.pack_list %}
+                    {% if item %}
+                    <tr>
+                        {% for cell in item %}
+                        <td>{{ cell }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                    <tr>
+                        <td>Valid</td>  
+                        <td>{{ result.valid }} Days</td>
+                    </tr>
+                </table>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    <div class="membership-heading">
+        <h1>Memberships</h1>
+    </div>
+    <section class="membership-section">
+        <div class="membership-view">
+            {% for result in membership %}
+            <div class="membership-container">
+                <a href="../planpay/{{ result.plan.id }}">
+                <h2>{{ result.plan.P_Name }}</h2>
+                <p>Cost: Rs.{{ result.price }}/-</p>
+                <table class="membership-table">
+                    <colgroup>
+                        <col style="width: 300px;">
+                        <col style="width: 90px;">
+                    </colgroup>
+                    {% for item in result.member_list %}
+                    {% if item %}
+                    <tr>
+                        {% for cell in item %}
+                        <td>{{ cell }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                    <tr>
+                        <td>Valid</td>
+                        <td>{{ result.valid }} Days</td>
+                    </tr>
+                </table>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</main>
+{% include 'footer.html' %}
+{% endblock %}

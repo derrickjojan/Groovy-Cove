@@ -1,0 +1,312 @@
+{% load static %}
+{% block content %}
+{% include 'header.html'%}
+
+<head>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"></script>
+    <style>
+        .content {
+            justify-content: space-between;
+            padding: 50px 100px 10px 100px;
+            width: 100%;
+        }
+
+        .products {
+            display: flex;
+            gap: 20px;
+        }
+
+        .booking {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .box {
+            width: 70%;
+            border: 1px solid #ccc;
+            padding: 20px;
+        }
+
+        .box h1 {
+            color: #ffc107;
+        }
+
+        .box h2 {
+            margin-top: 20px;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+
+        .box p {
+            font-size: 20px;
+            color: #ccc;
+        }
+
+        .boxx {
+            width: 30%;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+        }
+
+
+        .total-price {
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        .total-price h1 {
+            border-top: 1px solid #ccc;
+            font-weight: bold;
+            font-size: 45px;
+            padding-bottom: 10px;
+            padding-left: 40px;
+            border-bottom: 1px solid #ccc;
+            color: #ffc107;
+        }
+
+        .total-price h2 {
+            font-weight: bold;
+            font-size: 30px;
+            margin-top: 10px;
+            padding-bottom: 20px;
+            padding-left: 40px;
+            color: #ccc;
+        }
+
+        .total-price p {
+            font-size: 25px;
+            padding-left: 40px;
+            color: #ccc;
+        }
+
+        .total h2 {
+            color: #ffc107;
+            padding-top: 20px;
+            font-weight: bold;
+            border-top: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .proceed {
+            background: transparent;
+            padding: 15px 20px;
+            border: 1px solid #ffc107;
+            color: #ffc107;
+        }
+
+        .proceed:hover {
+            background-color: #218838;
+        }
+
+        .button {
+            margin: 40px;
+            text-align: right;
+        }
+
+
+        .boxxx {
+            border: none;
+            display: flex;
+
+        }
+
+        .button {
+            position: relative;
+            bottom: 15px;
+            height: 20px;
+        }
+
+        .boxxx h1 {
+            color: #ccc;
+        }
+
+        .cards {
+            padding: 20px;
+            width: 100%;
+            border: 1px solid #ccc;
+        }
+
+        .val {
+            text-align: right;
+            align-items: right;
+        }
+
+        .select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ffc107;
+            box-sizing: border-box;
+            /* Remove border-radius */
+            border-radius: 0;
+            background: transparent;
+            color: #ccc;
+
+            /* Set border-radius to 0 to remove the curved appearance */
+        }
+
+        .btt {
+            font-size: 25px;
+            background-color: #ffc107;
+            padding: 10px 20px;
+            color: #000;
+            width: 400px;
+            border: none;
+            clip-path: polygon(0 0, 0 calc(100% - 20px), 20px 100%, 100% 100%, 100% 20px, calc(100% - 20px) 0);
+        }
+
+        input[type="text"] {
+            width: 30%;
+            padding: 8px;
+            border: 1px solid #ffc107;
+            background: transparent;
+            color: #ccc;
+        }
+
+        .valv p {
+            color: #ccc;
+        }
+
+        .valv {
+            display: flexbox;
+            margin-left: 40px;
+            width: 90%;
+            margin-bottom: 15px;
+        }
+
+        /* Style for the card header container */
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .card-header h1 {
+            margin-right: 10px;
+        }
+
+
+        .card-header .bttn {
+            border: 1px solid #ffc107;
+            padding: 10px 20px;
+            color: #ffc107;
+            width: 125px;
+        }
+        .messages{
+            color: #ffc107;
+            margin-top:20px;
+            font-size: 20px;
+        }
+        .toggle-button {
+            background-color: transparent;
+            color: #ffc107;
+            border: 1px solid#ffc107;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-button:hover {
+            background-color: #ffc107;
+            color: #fff;
+        }
+    </style>
+</head>
+<main>
+    <div class="content">
+        <section class="booking">
+            <div class="products">
+                <div class="box">
+                    <h1>Plan Details</h1>
+                    <h2>{{ result.P_Name}}</h2>
+                    <p>{{  result.P_Desc}}</p>
+                </div>
+
+                <div class="boxx">
+                    <div class="total-price">
+                        <div class="details">
+                            <h1>Order Summary</h1>
+                        </div>
+                        <div class="price-details">
+                            <p>Price: {{ result.P_Price }}/-</p>
+                            <p>Discount: 0</p>
+                            {% if result.id == 9 or result.id == 10 %}
+                                <p><button id="toggleButton" class="toggle-button" onclick="togglePricing()">Monthly</button></p>
+                            {% endif %}
+                        </div>
+                        
+                        
+                        <div class="total">
+                            <h2 id="totalAmount">Total Amount: {{ result.P_Price }}/-</h2>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="boxxx">
+                <div class="cards">
+                    <div class="card-header">
+                        <h1>Credit & Debit Cards</h1>
+                        <a href="../plancard/{{ result.id }}" class="bttn">Add A Card</a>
+                    </div>
+                    <form method="post" action="../payplan">
+                        {% csrf_token %}
+                        <input type="hidden" name="plan_id" value="{{ result.id }}">
+                        <input type="hidden" name="total_price" id="totalPrice" value="{{ result.P_Price }}">
+                        <input type="hidden" id="paymentFrequency" name="payment_frequency" value="monthly">
+                        <div class="valv">
+                            <p>Select Card:</p>
+                            <select name="card_id" class="select">
+                                {% for card in card %}
+                                <option value="{{ card.id }}">{{ card.C_Number }}</option>
+                                {% endfor %}
+                            </select>
+                            <p>Enter CVV:</p>
+                            <input type="text" maxlength="3" name="cvv">
+                            {% if messages %}
+                            <ul class="messages">
+                                {% for message in messages %}
+                                    <li>{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                        </div>
+                        <div class="val">
+                            <input type="submit" value="Book Plan" class="btt">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<script>
+    function togglePricing() {
+        var button = document.getElementById("toggleButton");
+        var totalAmount = document.getElementById("totalAmount");
+        var totalPriceInput = document.getElementById("totalPrice");
+        var paymentFrequencyInput = document.getElementById("paymentFrequency");
+        var currentText = button.textContent;
+        var price = parseFloat("{{ result.P_Price }}");
+
+        // Toggle text and pricing logic
+        if (currentText === "Monthly") {
+            button.textContent = "Annually";
+            totalAmount.textContent = "Total Amount: " + (price * 12) + "/-"; 
+            totalPriceInput.value = price * 12; 
+            paymentFrequencyInput.value = "annually";
+        } else {
+            button.textContent = "Monthly";
+            totalAmount.textContent = "Total Amount: " + price + "/-";
+            totalPriceInput.value = price; 
+            paymentFrequencyInput.value = "monthly"; 
+        }
+    }
+</script>
+
+{% include 'footer.html' %}
+{% endblock %}

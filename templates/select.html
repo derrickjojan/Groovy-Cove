@@ -1,0 +1,27 @@
+{% load static %}
+{% block content %}
+{% include 'header.html'%}
+<main>
+    <section class="contact-section">
+        <div class="container">
+            <div class="col-12">
+                <h2 style="font-size: 50px; color: white; padding-bottom: 20px;">Login</h2>
+            </div>
+            <div class="col-lg-8">
+                {% for i in result %}
+                <p>{{i.name}}</p>
+                <p>{{i.phno}}</p>
+                <p>{{i.age}}</p>
+                <p>{{i.state}}</p>
+                <p>{{i.city}}</p>
+                <p>{{i.name}}</p>
+                <p>{{i.name}}</p>
+                <p>{{i.name}}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+</main>
+{% include 'footer.html' %}
+{% endblock %}

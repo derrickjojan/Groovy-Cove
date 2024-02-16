@@ -1,0 +1,97 @@
+{% load static %}
+{% block content %}
+{% include 'header.html'%}
+<style>
+    .star-rating {
+    display: flex;
+    font-size: 25px;
+    list-style-type: none;
+}
+
+.star {
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.star i {
+    pointer-events: none; /* Disable pointer events on the icon */
+}
+
+.selected {
+    color: yellow; /* Change color for selected stars */
+}
+
+</style>
+<main>
+    <!-- Feedback/Review Section -->
+    <section class="feedback-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2 style="font-size: 50px; color: white; padding-bottom: 20px;">Feedback</h2>
+                </div>
+                <div class="col-lg-12">
+                    <form class="form-contact contact_form" action="addfeed" method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group mt-3">
+                                    <p style="color: white; font-size: 25px;">Enter Your Name:</p>
+                                    <input class="form-control" name="name" id="name" type="text" placeholder="Your Name">
+                                </div>
+                            </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group mt-3">
+                                    <p style="color: white; font-size: 25px;">Enter Review:</p>
+                                    <textarea class="form-control" name="message" id="message" rows="4" placeholder="Your Message"></textarea>
+                                </div>
+                            </div>
+                            <!-- Star rating -->
+                            <div class="col-lg-12">
+                                <div class="form-group mt-3">
+                                    <p style="color: white; font-size: 25px;">Rating:</p>
+                                    <ul class="star-rating">
+                                        <li class="star" data-value="1"><i class="fas fa-star"></i></li>
+                                        <li class="star" data-value="2"><i class="fas fa-star"></i></li>
+                                        <li class="star" data-value="3"><i class="fas fa-star"></i></li>
+                                        <li class="star" data-value="4"><i class="fas fa-star"></i></li>
+                                        <li class="star" data-value="5"><i class="fas fa-star"></i></li>
+                                    </ul>
+                                    <input type="hidden" name="rating" id="rating" value="">
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group mt-3">
+                                    <button type="submit" class="button button-contactForm btn_1">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script>
+    const stars = document.querySelectorAll('.star');
+
+    stars.forEach(star => {
+        star.addEventListener('click', () => {
+            const value = star.dataset.value;
+            document.getElementById('rating').value = value;
+
+            // Reset all stars' colors
+            stars.forEach(s => s.classList.remove('selected'));
+
+            // Highlight selected stars
+            for (let i = 0; i < value; i++) {
+                stars[i].classList.add('selected');
+            }
+        });
+    });
+</script>
+
+{% include 'footer.html' %}
+{% endblock %}

@@ -1,0 +1,205 @@
+{% load static %}
+{% block content %}
+{% include 'admin.html' %}
+<html>
+
+<head>
+    <style>
+        body {
+            background-color: #2f323b;
+        }
+
+        .container {
+            font-size: 17px;
+            position: relative;
+            left: 15%;
+            top: 13%;
+            max-width: 1500px;
+            padding-top: 25px;
+            border-radius: 10px;
+            transition: left 0.9s ease;
+        }
+
+        #check:checked~.container {
+            position: relative;
+            left: 180px;
+            min-width: calc(85% - 10px);
+            transition: left 1.2s ease;
+        }
+
+        .header {
+            position: relative;
+            bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #ffc107;
+            border-radius: 2px;
+        }
+
+
+        .header h3 {
+            padding-left: 20px;
+            font-size: 30px;
+            font-weight: bold;
+            color: #ccc;
+            margin: 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ffc107;
+            color: #000;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .btn:hover {
+            background-color: #fff;
+        }
+
+        .table {
+            padding: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            color: #ffc107;
+            padding: 13px;
+            text-align: center;
+            border-bottom: 1px solid #6c757d;
+        }
+
+        th {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        button{
+            position: relative;
+            display: inline-block;
+            padding: 1px 10px;
+            font-size: 20px;
+            color: #ffc107;
+            text-decoration: none;
+            border: none;
+            background-color: transparent;
+        }
+
+        .dp-content button:hover:before {
+            content: "Assign";
+            position: absolute;
+            top: calc(100% + 5px);
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+        .butt {
+            padding: 10px 10px;
+            color: #ffc107;
+            background-color: transparent;
+            border: 1px #ffc107 solid;
+        }
+
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h3>Assign List</h3>
+        </div>
+        <div class="table">
+            <table>
+                <colgroup>
+                    <col width="5%">
+                    <col width="10%">
+                    <col width="10%">
+                    <col width="10%">
+                    <col width="15%">
+                    <col width="15%">
+                    <col width="20%">
+
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Event id</th>
+                        <th>Staff Name</th>
+                        <th>Event Name</th>
+                        <th>Event Capacity</th>
+                        <th>Maintenance Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in result %}
+                    <tr>
+                        <td>
+                            {{ i.id }}
+                        </td>
+                        <td>
+                            {{ i.id }}
+                        </td>
+                        <td>
+                            {{ staff }}
+                        </td>
+                        <td>
+                            {{i.E_Name }}
+                        </td>
+                        
+                        <td>
+                            {{i.E_Cpty}}
+                        </td>
+                        <form action="../assign" method="post">
+                        <td>
+                        <input type="date" name="date" class="butt" min="{{ today }}" required>
+                        </td>
+                        <td align="center">
+                                {% csrf_token %}
+                                <input type="hidden" name="main_id" value="{{maint_id}}">
+                                <input type="hidden" name="event_id" value="{{i.id}}">
+                                <div class="dp-content">
+                                    <button><i class="fa-solid fa-check"></i></button>
+                                </div>
+                        </td>
+                        </form>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var today = new Date().toISOString().split('T')[0]; // Get today's date in "YYYY-MM-DD" format
+        var dateInputs = document.querySelectorAll('input[type="date"]');
+
+        dateInputs.forEach(function (input) {
+            input.min = today; // Set minimum date for all date inputs to today
+        });
+    });
+</script>
+</html>
+{% endblock %}

@@ -1,0 +1,162 @@
+{% load static %}
+{% block content %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Receipt</title>
+    <style>
+        body {
+            font-family: "Jost", sans-serif;
+        }
+
+        .container {
+            border: 1px #ccc solid;
+        }
+
+        .receipt {
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+
+        }
+
+        .receipt f {
+            display: block;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .receipt table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .receipt th,
+        .receipt td {
+
+            padding: 8px;
+            text-align: left;
+        }
+
+        .receipt tfoot {
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 7px;
+            text-align: left;
+            border: 1px solid #ccc;
+        }
+
+        th {
+
+            font-weight: bold;
+        }
+
+        .order-details {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .dtls,
+        .sum {
+            width: 49%;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+
+<body>
+    <body>
+    <div class="container">
+        <div class="receipt">
+            <div class="logo">
+                <h2 style="color:yellow; font-size: 40px; text-decoration: none; color:#ffc107;">GroovyCove</h2>
+                <f>Your Gateway to Unforgettable Experiences!</f>
+                <f>Ph: +1 255 565 2365</f>
+            </div>
+            <h1 style="text-align: center;">Receipt</h1>
+            {% for plan in booked_plans %}
+
+            <div class="order-details">
+                <div class="dtls">
+                        <h3>Customer Details</h3>
+                        <p>Customer Name: {{ plan.customer_fname }} {{ plan.customer_lname }}</p>
+                        <p>Delivery Address: {{ plan.city }}, {{ plan.state }}, {{ plan.pin }}</p>
+                        <p>Date: {{ plan.booked_date }}</p>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="sum">
+                        <h3>Order Summary</h3>
+                        <p>Price (Per Day): {{ plan.per }}</p>
+                        <p>Discount: 0%</p>
+                        <p>Final Amount: {{ plan.price }}/-</p>
+                </div>
+            </div>
+
+            <!-- Receipt Table -->
+            <div class="table">
+                <table>
+                    <colgroup>
+                        <col width="6%">
+                        <col width="20%">
+                        <col width="20%">
+                        <col width="20%">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>plan Name</th>
+                            <th>Booked From</th>
+                            <th>Item Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Loop through items and display details -->
+                        <tr>
+                            <td>{{ plan.no }}</td>
+                            <td>{{ plan.plan_name }}</td>
+                            <td>{{ plan.booked_date }}</td>
+                            <td>{{ plan.price }}</td>
+                        </tr>
+                        <!-- Add more rows as needed -->
+                    </tbody>
+                    <!-- Table Footer -->
+                    <tfoot>
+                        <tr class="total">
+                            <td colspan="3">Discount: 0%</td>
+                            <td colspan="1">Total Amount: {{ plan.price }}/-</td>
+                        </tr>
+                        {% endfor %}
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        window.onload = function () {
+            window.addEventListener('afterprint', function () {
+                window.location.href = '../order';
+            });
+            window.print();
+        };
+    </script>
+    
+</body>
+</html>
+
+{% endblock %}

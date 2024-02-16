@@ -1,0 +1,102 @@
+{% load static %}
+{% block content %}
+{% include 'admin.html' %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <style>
+    body {
+      background-color: #2f323b;
+    }
+
+    .container {
+      font-size: 17px;
+      position: relative;
+      left: 15%;
+      top: 13%;
+      max-width: 1500px;
+      padding-top: 25px;
+      border-radius: 10px;
+      transition: left 0.9s ease;
+    }
+
+    #check:checked~.container {
+      position: relative;
+      left: 180px;
+      min-width: calc(85% - 10px);
+      transition: left 1.2s ease;
+    }
+
+    .header {
+      position: relative;
+      bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      border-bottom: 1px solid #ffc107;
+      border-radius: 2px;
+    }
+    .header h3 {
+            padding-left: 20px;
+            font-size: 30px;
+            font-weight: bold;
+            color: #ccc;
+            margin: 0;
+        }
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+    }
+
+    .grid-item {
+      background-color: transparent;
+      padding: 20px;
+      border: 1px solid #ffc107;
+      color: #fff;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <h3>Dashboard</h3>
+  </div>
+    <div class="grid-container">
+      <div class="grid-item">
+        <h2>Total Number of Customers: {{ total_customers }}</h2>
+      </div>
+      <div class="grid-item">
+        <h2>Total Number of Staff: {{ total_staff }}</h2>
+      </div>
+      <div class="grid-item">
+        <h2>Total Number of Plans: {{ total_plans }}</h2>
+      </div>
+      <div class="grid-item">
+        <h2>Total Number of Events: {{ total_events }}</h2>
+      </div>
+      <div class="grid-item">
+        <h2>Total Number of Event Bookings: {{ total_event_bookings }}</h2>
+      </div>
+      <div class="grid-item">
+        <h2>Total Number of Plan Bookings: {{ total_plan_bookings }}</h2>
+      </div>
+      <div class="grid-item">
+        <h2>Total Number of Reviews: {{ total_reviews }}</h2>
+      </div>
+      <div class="grid-item">
+        <h2>Total Number of Maintenance crew: {{ total_maintenance }}</h2>
+      </div>
+    </div>
+</body>
+
+</html>
+
+{% endblock %}

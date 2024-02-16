@@ -1,0 +1,91 @@
+{% load static %}
+{% block content %}
+{% include 'header.html'%}
+
+<head>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"></script>
+    <style>
+        .event-heading h1 {
+            color: white;
+            padding: 40px 0 20px;
+            text-align: center;
+            font-size: 60px;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        main {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .event-heading {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #f5f5f5;
+
+        }
+
+        .event-container {
+            border-bottom: 1px solid #f5f5f5;
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            margin: 10px;
+            width: 100%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .event-container h2 {
+            margin-top: 40px;
+            font-size: 50px;
+            color: #fff;
+        }
+
+        .event-container p {
+            font-size: 20px;
+            margin: 50px 0;
+            color: #fff;
+        }
+
+        .details {
+            max-width: 730px;
+        }
+
+        .event-container img {
+            max-width: 100%;
+            height: auto;
+            width: auto;
+            border-radius: 5px;
+        }
+        model-viewer{
+            width: 800px;
+            height:600px;
+            margin: 0, auto;
+        }
+    </style>
+</head>
+<main>
+    <div class="event-heading">
+        <h1>{{ cat_info.Cat_Name }}</h1>
+    </div>
+    <section class="event-section">
+        {% for i in f_result %}
+        <div class="event-container">
+            <div class="details">
+            <h2>{{ i.F_Name }}</h2>
+            <p>{{ i.F_Desc}}</p>
+            </div>
+            <div class="picture">
+                <model-viewer src="{{ i.F_Model.url }}" camera-controls auto-rotate-delay="1" camera-orbit="20deg 75deg 70%" interaction-prompt="none"></model-viewer>
+            </div>
+        </div>
+        {% endfor %}
+    </section>
+</main>
+{% include 'footer.html' %}
+{% endblock %}

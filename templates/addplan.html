@@ -1,0 +1,113 @@
+{% load static %}
+{% block content %}
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>register</title>
+    <style>
+        body {
+            font-family: "Jost", sans-serif;
+            background-color: #2f323b;
+        }
+
+        .container {
+            position: relative;
+            top: 3%;
+            width: 1000px;
+            margin: 0 auto;
+            padding: 40px;
+            border-radius: 10px;
+        }
+
+        .heading {
+            margin: 10px;
+            font-size: 20px;
+            text-align: left;
+            color: #fff;
+            border-bottom: solid 1px #ffc107;
+        }
+
+        .data p {
+            margin-top: 20px;
+        }
+
+        .data {
+            width: 97%;
+            color: #fff;
+            padding-top: 25px;
+            padding: 20px;
+        }
+
+        input,
+        select,
+        textarea {
+            color: #fff;
+            width: 100%;
+            padding: 10px;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #6c757d;
+            border-radius: 1px;
+        }
+
+        select option {
+            background-color: #343a40;
+            color: #fff;
+            padding: 10px;
+        }
+
+        .button {
+            position: relative;
+            left: 25%;
+            top: 15px;
+            width: 50%;
+            background-color: #ffc107;
+            color: #000;
+            border: none;
+            font-size: 20px;
+            border-radius: 2px;
+        }
+
+        .back {
+            position: relative;
+            top: 10px;
+            left: 20px;
+            font-size: 40px;
+            color: #ffc107;
+        }
+    </style>
+
+</head>
+
+<body>
+    <a href="plan" class="back"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+    <div class="container">
+        <form action="padd" method="post">
+            {% csrf_token %}
+            <div class="heading">
+                <h1>Add Plan +</h1>
+            </div>
+            <div class="data">
+                <p>Plan Name :</p>
+                <input type="text" placeholder="Plan Name" name="pname" required>
+                <p>Plan Type :</p>
+                <select id="category" name="ptype">
+                    <option value="tickets">Tickets</option>
+                    <option value="packages">Packages</option>
+                    <option value="memberships">Memberships</option>
+                </select>
+                <p>Plan Price :</p>
+                <input type="text" placeholder="Plan Price" name="pprice" required>
+                <p>Validity (Entry) :</p>
+                <input type="text" placeholder="Plan Validity" name="pvalid" required>
+                <p>Plan Description :</p>
+                <textarea placeholder="Plan Description" style="height: 100px;" name="pdesc" required></textarea>
+            </div>
+            <input type="submit" name="Register" value="Add Plan" class="button">
+        </form>
+    </div>
+</body>
+
+</html>
+{% endblock %}

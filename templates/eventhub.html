@@ -1,0 +1,89 @@
+{% load static %}
+{% block content %}
+{% include 'header.html'%}
+
+<head>
+    <style>
+        .event-heading h1 {
+            color: white;
+            padding: 40px 0 20px;
+            text-align: center;
+            font-size: 60px;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        main {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .event-heading {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .event-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .event-container {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            margin: 10px;
+            width: 100%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .event-container h2 {
+            font-size: 50px;
+            color: #fff;
+        }
+
+        .event-container p {
+            font-size: 20px;
+            margin: 10px 0;
+            color: #fff;
+        }
+        .details{
+            max-width: 730px;
+        }
+        .event-container img {
+            max-width: 100%;
+            height: auto;
+            width: auto;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<main>
+    <div class="event-heading">
+        <h1>Event Hub</h1>
+    </div>
+    <section class="event-section">
+        {% for i in result %}
+        <div class="event-container">
+            <div class="details">
+            <h2>{{ i.E_Name }}</h2>
+            <p>Capacity: {{ i.E_Cpty }}</p>
+            <p>{{ i.E_Desc }}</p>
+            <p>Price: Rs.{{ i.E_Price }}/-</p>
+            </div>
+            <div class="picture">
+            <img src="{{ i.E_Img.url }}" alt="{{ i.E_Name }}">
+            </div>
+        </div>
+        {% endfor %}
+    </section>
+</main>
+{% include 'footer.html' %}
+{% endblock %}

@@ -1,0 +1,91 @@
+{% load static %}
+{% block content %}
+<html lang="en">
+<head>
+
+  <title>Payment Successful</title>
+<style>
+body, h1, p {
+  overflow: hidden;
+  font-family: "Jost", sans-serif;
+
+}
+.container {
+    margin: 0 auto;
+}
+
+.success-message {
+  text-align: center;
+  position: relative;
+  top:28vh;
+  margin-bottom: 20px;
+}
+
+.success-message h1 {
+  font-size: 36px;
+  color: #ffc107;
+  margin: 10px 0;
+}
+
+.success-message p {
+  color: #fff;
+  font-size: 30px;
+  font-weight: bold;
+  margin: 5px 0;
+}
+
+.options {
+  display: flex;
+  justify-content: center;
+}
+
+.btn {
+  padding: 15px 20px;
+  margin: 10px;
+  background-color: transparent;
+  border:#ffc107 2px solid;
+  color: #ffc107;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 18px;
+}
+
+.btn:hover {
+  background-color: #ffc107;
+  border:#fff solid;
+  color:#000;
+    
+}
+/* Custom styling for the verified badge */
+.verified-badge {
+    display: inline-block;
+    background-color: #3897f0;
+    color: white;
+    border-radius: 60%;
+    padding: 0.30em;
+    font-size:55px;
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0.9);
+}
+
+  </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body bgcolor="black">
+<div class="container">
+    <div class="success-message">
+        <div class="verified-badge">
+            <i class="fas fa-check"></i>
+        </div>
+        <h1>Payment Successful!</h1>
+        <p>Your payment has been processed successfully.</p>
+        <p>Thank you for choosing our services.</p>
+        <div class="options">
+            <a href="../index" class="btn">Go to Home</a>
+            <a href="../order" class="btn">Go to Orders</a>
+            <a href="../epreceipt/{{id}}" class="btn">Print Receipt</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+{% endblock %}

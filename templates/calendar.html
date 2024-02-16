@@ -1,0 +1,311 @@
+{% load static %}
+{% block content %}
+{% include 'admin.html' %}
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendar App Vanilla JS</title>
+
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+    }
+    .logo a {
+      position: relative;
+      right:5px;
+      background-color: #ffc107;
+      padding: 20px;
+      color: #000;
+      font-size: 35px;
+      text-decoration: none;
+    }
+    button {
+      width: 75px;
+      cursor: pointer;
+      box-shadow: 0px 0px 2px gray;
+      border: none;
+      outline: none;
+      padding: 5px;
+      border-radius: 5px;
+      color: white;
+    }
+
+    #header {
+      padding: 10px;
+      color: #ffc107;
+      font-size: 26px;
+      font-family: sans-serif;
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 30px;
+    }
+
+    #header button {
+      background-color: transparent;
+      border: 1px solid #ffc107;
+      padding: 10px;
+      border-radius: 0px;
+      color: #ffc107;
+    }
+
+    #container {
+      position: relative;
+      top: 150px;
+      left: 130px;
+      width: 80%;
+    }
+
+    #calendar {
+      width: 100%;
+      margin: auto;
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .day {
+      background: #212529;
+      color: #e8f4fa;
+      width: 150px;
+      padding: 10px;
+      height: 150px;
+      cursor: pointer;
+      box-sizing: border-box;
+      margin: 5px;
+      border: 2px solid #ffc107;
+      display: flex;
+      border-radius: 10px;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .day:hover {
+      background-color: #ffc107;
+      border: 3px solid #000;
+      color: #000;
+    }
+
+    .day+#currentDay {
+      background-color: #e8f4fa;
+    }
+
+    .event {
+      font-size: 15px;
+      padding: 5px;
+      color: white;
+      background-color: #000;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .padding {
+      cursor: default !important;
+      box-shadow: none !important;
+    }
+
+    .detail-card {
+      position: absolute;
+      top: 150px;
+      left: 450px;
+      border-radius: 10px;
+      background-color: #212529;
+      border: 1px solid #ffc107;
+      padding: 15px;
+      width: 450px;
+      z-index: 100;
+    }
+
+    .detail-card h3 {
+      padding-left: 10px;
+      color: #ccc;
+    }
+
+    .detail-card p {
+      padding-left: 10px;
+      color: #ccc;
+    }
+    .detail-card button {
+      background-color: #212529;
+      color: #ffc107;
+      border: 1px solid #ffc107;
+      padding: 8px 16px;
+      text-decoration: none;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+    <div id="header">
+      <div id="monthDisplay"></div>
+      <div>
+        <button class="butt" id="prevButton">Previous</button>
+        <button class="butt" id="nextButton">Next</button>
+      </div>
+    </div>
+    <div id="errorContainer"></div>
+
+    <div id="calendar-container">
+      <div id="calendar"></div>
+      <div id="detail-card-container"></div>
+    </div>
+
+  </div>
+  <script>
+    let nav = 0;
+    const calendar = document.getElementById('calendar');
+    const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+    async function load() {
+      try {
+        const response = await fetch('/api/events/');
+        if (!response.ok) {
+          throw new Error('Failed to fetch events');
+        }
+        const eventData = await response.json();
+        renderCalendar(eventData);
+      } catch (error) {
+        console.error('Error fetching events:', error);
+        // Display an error message on the UI
+        const errorContainer = document.getElementById('errorContainer');
+        errorContainer.innerText = 'Failed to fetch events. Please try again later.';
+      }
+    }
+
+
+    function renderCalendar(eventData) {
+    const dt = new Date();
+
+    if (nav !== 0) {
+        dt.setMonth(new Date().getMonth() + nav);
+    }
+
+    const day = dt.getDate();
+    const month = dt.getMonth();
+    const year = dt.getFullYear();
+
+    const firstDayOfMonth = new Date(year, month, 1);
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    const dateString = firstDayOfMonth.toLocaleDateString('en-us', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+    });
+    const paddingDays = weekdays.indexOf(dateString.split(', ')[0]);
+
+    document.getElementById('monthDisplay').innerText =
+        `${dt.toLocaleDateString('en-us', { month: 'long' })} ${year}`;
+
+    calendar.innerHTML = '';
+
+    for (let i = 1; i <= paddingDays + daysInMonth; i++) {
+        const daySquare = document.createElement('div');
+        daySquare.classList.add('day');
+        if (i > paddingDays) {
+            const dayNumber = i - paddingDays;
+            daySquare.innerText = dayNumber;
+
+            // Check if there are events for this day
+            const eventsForDay = eventData.filter(event => {
+                const eventDate = new Date(event.Booked_from);
+                const eventEndDate = new Date(event.Booked_to);
+
+                const dayNumberString = dayNumber.toString().padStart(2, '0');
+                const currentDate = `${year}-${(month + 1).toString().padStart(2, '0')}-${dayNumberString}`;
+                return (
+                    eventDate <= new Date(currentDate) &&
+                    new Date(currentDate) <= eventEndDate
+                );
+            });
+            // If there are events for this day, create event divs
+            if (eventsForDay.length > 0) {
+                const eventContainer = document.createElement('div');
+                eventContainer.classList.add('event-container');
+
+                eventsForDay.forEach(event => {
+                    const eventDiv = document.createElement('div');
+                    eventDiv.classList.add('event');
+                    const startDate = new Date(event.Booked_from).toLocaleDateString();
+                    const endDate = new Date(event.Booked_to).toLocaleDateString();
+                    eventDiv.innerText = `${event.Event_name}`;
+                    eventContainer.appendChild(eventDiv);
+                });
+                daySquare.appendChild(eventContainer);
+
+                // Display detail card for events of the day when clicked
+                daySquare.addEventListener('click', (event) => {
+                    // Clear any existing detail cards
+                    const existingCards = document.querySelectorAll('.detail-card');
+                    existingCards.forEach(card => card.remove());
+
+                    // Create and append the detail card to the detail card container
+                    const detailCard = createDetailCard(eventsForDay);
+                    document.getElementById('detail-card-container').appendChild(detailCard);
+                });
+            }
+        } else {
+            daySquare.classList.add('padding');
+        }
+        calendar.appendChild(daySquare);
+    }
+}
+
+
+    function createDetailCard(events) {
+    const card = document.createElement('div');
+    card.classList.add('detail-card');
+
+    events.forEach(event => {
+        const eventDiv = document.createElement('div');
+        const startDate = new Date(event.Booked_from).toLocaleDateString();
+        const endDate = new Date(event.Booked_to).toLocaleDateString();
+        eventDiv.innerHTML = `
+            <h3>${event.Event_name}</h3>
+            <p>Event Dates: ${startDate} to ${endDate}</p>
+            <p>Customer: ${event.Customer_fname} ${event.Customer_lname}</p>
+            <hr> <!-- Add a horizontal line between event details -->
+        `;
+        card.appendChild(eventDiv);
+    });
+
+    const closeButton = document.createElement('button');
+    closeButton.innerText = 'Close';
+    closeButton.addEventListener('click', () => {
+        card.remove();
+    });
+    card.appendChild(closeButton);
+
+    return card;
+}
+
+
+
+    function initPagination() {
+      // Add event listeners to pagination controls
+      const prevButton = document.getElementById('prevButton');
+      prevButton.addEventListener('click', () => {
+        nav--;
+        load(nav);
+      });
+
+      const nextButton = document.getElementById('nextButton');
+      nextButton.addEventListener('click', () => {
+        nav++;
+        load(nav);
+      });
+    }
+
+    initPagination();
+    load();
+
+  </script>
+</body>
+
+</html>
+{% endblock %}

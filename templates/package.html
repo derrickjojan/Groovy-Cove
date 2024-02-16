@@ -1,0 +1,85 @@
+{% load static %}
+{% block content %}
+<head>
+    <style>
+        .plan-heading h1 {
+            color:white;
+            padding: 40px 0 20px;
+            text-align: center;
+            font-size: 60px;
+        }
+
+        .plan-container {
+            border-radius: 20px;
+            display: inline-block;
+            margin-right: 50px;
+            padding: 20px; 
+            border: 1px solid #ffc107;
+            background-color: rgba(255, 255, 255, 0.05);
+            }
+        .plan-container h2{
+            color:#ffc107
+
+        }
+
+        .plan-container p{
+            color:white;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 25px;
+        }
+
+        .plan-table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .plan-table th,
+        .plan-table td {
+            color:white;
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #595b5c;
+        }
+
+        .plan-table th {
+            background-color: red;
+        }
+
+        .plan-container h2 {
+            text-align: center;
+        }
+
+    </style>
+</head>
+<main>
+    <div class="plan-heading">
+        <h1>Packages</h1>
+    </div>
+    <section class="plan-section">
+        <div class="plan-view">
+            {% for result in results %}
+            <div class="plan-container">
+                <h2>{{ result.plan.P_Name }}</h2>
+                <p>Cost: Rs.{{ result.price }}/-</p>
+                <table class="plan-table">
+                    <colgroup>
+                        <col style="width: 300px;">
+                        <col style="width: 70px;">
+                    </colgroup>
+                    {% for item in result.description_list %}
+                    {% if item %}
+                    <tr>
+                        {% for cell in item %}
+                        <td>{{ cell }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </table>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</main>
+{% endblock %}

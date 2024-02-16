@@ -1,0 +1,151 @@
+{% load static %}
+{% block content %}
+{% include 'header.html'%}
+
+<head>
+    <style>
+        .event-heading h1 {
+            color: white;
+            padding: 40px 0 20px;
+            text-align: center;
+            font-size: 60px;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        main {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .event-heading {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .event-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .event-container {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            margin: 10px;
+            width: 100%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .event-container h2 {
+            font-size: 50px;
+            color: #fff;
+        }
+
+        .event-container p {
+            font-size: 20px;
+            margin: 40px 0;
+            color: #fff;
+        }
+
+        .details {
+            max-width: 730px;
+        }
+
+        .event-container img {
+            max-width: 100%;
+            height: auto;
+            width: auto;
+            border-radius: 5px;
+        }
+
+        .event-list {
+            margin-top: 50px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .event-card {
+            width: 400px;
+            margin: 10px;
+            border: 1px solid #ffc107;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .properties-img img {
+            width: 100%;
+            height: 290px;
+        }
+
+        .properties-caption {
+            padding: 20px;
+        }
+
+        h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .price span {
+            font-size: 14px;
+            color: #888;
+        }
+        .zoom-effect {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease; /* Add transition for smooth effect */
+}
+
+.zoom-effect:hover {
+    transform: scale(1.05); /* Zoom in by 5% on hover */
+}
+    </style>
+</head>
+<main>
+    <div class="event-heading">
+        <h1>Event Hub</h1>
+    </div>
+    <section class="event-section">
+        <div class="event-container">
+            <div class="details">
+                <h2>Multi-purpose Halls</h2>
+                <p>Groovy Cove provides flexible event spaces, including convention centers and multi-purpose halls,
+                    suitable for weddings, birthdays, corporate events, exhibitions, and cultural shows. Our halls adapt
+                    to different occasions, allowing customization for varying attendees. Furnished with sophisticated
+                    amenities, these well-equipped spaces ensure comfort. Smaller halls cater to corporate meetings and
+                    training sessions, offering dynamic venues for diverse needs.</p>
+            </div>
+            <div class="picture">
+                <img style="width: 640px;" src="{% static 'img/miltipurpose-hall.jpg' %}" alt="event-hub">
+            </div>
+        </div>
+    </section>
+    <section class="event-list">
+        {% for i in result %}
+        <div class="event-card zoom-effect"> <!-- Add zoom-effect class -->
+            <div class="properties-img">
+                <a href="eventview/{{i.id}}"><img src="{{ i.E_Img.url }}" alt="{{ i.E_Name }}"></a>
+            </div>
+            <div class="properties-caption properties-caption2">
+                <h3 style="color:#f5f5f5;"><a href="eventview/{{i.id}}">{{ i.E_Name }}</a></h3>
+                <div class="properties-footer">
+                    <div class="price">
+                        <span>{{ i.E_Cpty }} Capacity</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </section>
+    
+</main>
+{% include 'footer.html' %}
+{% endblock %}

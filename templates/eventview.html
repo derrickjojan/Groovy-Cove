@@ -1,0 +1,252 @@
+{% load static %}
+{% block content %}
+{% include 'header.html'%}
+
+<head>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"></script>
+    <style>
+        .event-heading h1 {
+            color: white;
+            padding: 40px 0 20px;
+            text-align: center;
+            font-size: 60px;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        main {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .event-heading {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .event-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .event-container {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            margin: 10px;
+            width: 100%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .event-container h2 {
+            font-size: 50px;
+            color: #fff;
+        }
+
+        .event-container p {
+            font-size: 20px;
+            margin: 40px 0;
+            color: #fff;
+        }
+
+        .details {
+            max-width: 730px;
+        }
+
+        .event-container img {
+            max-width: 100%;
+            height: auto;
+            width: auto;
+            border-radius: 5px;
+        }
+
+        .event-list {
+            margin-top: 50px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .event-card {
+            width: 400px;
+            margin: 10px;
+            border: 1px solid #ffc107;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .properties-img img {
+            width: 100%;
+            height: 290px;
+        }
+
+        .properties-caption {
+            padding: 20px;
+        }
+
+        h3 {
+            color: #fff;
+            margin-top: 40px;
+            font-size: 25px;
+        }
+
+        .price span {
+            font-size: 14px;
+            color: #888;
+        }
+
+        model-viewer {
+            width: 1000px;
+            height: 600px;
+            margin: 0, auto;
+        }
+
+        .book a {
+            text-decoration: none;
+            color: #ffc107;
+            border: 1px solid #ffc107;
+            padding: 20px;
+        }
+
+        .btt {
+            font-size: 20px;
+            padding: 10px 20px;
+            color: #ffc107;
+            margin-left: 20px;
+            background-color: transparent;
+            border: 1px #ffc107 solid;
+        }
+
+        .butt {
+            font-size: 20px;
+            padding: 10px 20px;
+            color: #ffc107;
+            background-color: transparent;
+            border: 1px #ffc107 solid;
+        }
+
+        .book label {
+            color: #ccc;
+            margin: 5px;
+        }
+
+        .zoom-effect {
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            /* Add transition for smooth effect */
+        }
+
+        .zoom-effect:hover {
+            transform: scale(1.05);
+            /* Zoom in by 5% on hover */
+        }
+    </style>
+</head>
+<main>
+    <section class="event-section">
+        <div class="event-container">
+
+            <div class="details">
+                <h2>{{ f_result.E_Name }}</h2>
+                <h3>Capacity: {{ f_result.E_Cpty }}</h3>
+                <h3>Cost: {{ f_result.E_Price }}/-</h3>
+                <p>{{ f_result.E_Desc }}</p>
+                <div class="book">
+                    <form action="../eventbook/{{f_result.id}}" method="POST" onsubmit="return validateForm(this)">
+                        {% csrf_token %}
+                        <label>From:</label>
+                        <input type="date" name="from" class="butt" min="{{ today }}">
+                        <label>To:</label>
+                        <input type="date" name="to" class="butt" min="{{ today }}" onchange="validateToDate(this)">
+                        <input type="submit" value="Book Event" class="btt">
+                    </form>
+                    {% if error_message %}
+                    <script>
+                        window.onload = function () {
+                            alert("{{ error_message }}");
+                        };
+                    </script>
+                    {% endif %}
+                    {% if errorf_message %}
+                    <script>
+                        window.onload = function () {
+                            alert("{{ error_message }}");
+                        };
+                    </script>
+                    {% endif %}
+                </div>
+            </div>
+
+
+
+            <div class="picture">
+                <img style="width: 600px;" src="{{ f_result.E_Img.url }}" alt="event-hub">
+            </div>
+        </div>
+        <div class="model">
+            <model-viewer src="{{ f_result.E_Model.url }}" camera-controls auto-rotate-delay="1"
+                camera-orbit="60deg 80deg 70%" interaction-prompt="none"></model-viewer>
+        </div>
+    </section>
+    <section class="event-list">
+        {% for i in result %}
+        <div class="event-card zoom-effect"> <!-- Add zoom-effect class -->
+            <div class="properties-img">
+                <a href="../eventview/{{i.id}}"><img src="{{ i.E_Img.url }}" alt="{{ i.E_Name }}">
+            </div>
+            <div class="properties-caption properties-caption2">
+                <h3><a href="../eventview/{{i.id}}">{{ i.E_Name }}</a></h3>
+                <div class="properties-footer">
+                    <div class="price">
+                        <span>{{ i.E_Cpty }} Capacity</span>
+                    </div>
+                </div>
+            </div>
+            </a>
+        </div>
+        {% endfor %}
+    </section>
+</main>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var today = new Date().toISOString().split('T')[0]; // Get today's date in "YYYY-MM-DD" format
+        var dateInputs = document.querySelectorAll('input[type="date"]');
+
+        dateInputs.forEach(function (input) {
+            input.min = today; // Set minimum date for all date inputs to today
+        });
+    });
+
+    function validateToDate(toInput) {
+        var fromDate = new Date(document.querySelector('input[name="from"]').value);
+        var toDate = new Date(toInput.value);
+
+        if (toDate < fromDate) {
+            alert("Enter a valid Date. (Date Must be after the From Date)");
+            toInput.value = ''; // Reset the To date input
+        }
+    }
+
+    function validateForm(form) {
+        var fromDate = form.elements["from"].value;
+        var toDate = form.elements["to"].value;
+
+        if (fromDate === "" || toDate === "") {
+            alert("Please select both From and To dates.");
+            return false; // Prevent form submission
+        }
+
+        return true; // Allow form submission
+    }
+
+</script>
+{% include 'footer.html' %}
+{% endblock %}

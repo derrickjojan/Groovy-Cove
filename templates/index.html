@@ -1,0 +1,124 @@
+{% load static %}
+{% block content %}
+{% include 'header.html' %}
+<main>
+
+    <div class="slider-area">
+        <div class="slider-active">
+            <div class="single-slider slider-height slider-bg1 d-flex align-items-center">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xxl-6 col-xl-7 col-lg-8 col-md-8 col-sm-10">
+                            <div class="hero-caption">
+                                <h1 data-animation="fadeInUp" data-delay=".3s">Discover New Adventures: Your Gateway to Unforgettable Experiences!</h1>
+                                <a href="eventpg" class="btn_1 hero-btn" data-animation="fadeInUp" data-delay=".8s">Book
+                                    Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <section class="about-area top-padding">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-6 col-lg-7 col-md-9">
+                    <div class="section-tittle text-center line mb-70">
+                        <h2>Park</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="park-head">
+                <p style="color: white; padding-bottom: 30px; text-align: center;">Groovy Cove Park is designed to provide Health, Sports And Adventure with indoor and outdoor activities.</p>
+            </div>
+            <div class="row align-items-center section-overlay">
+                <div class="about-caption about-caption1">
+                    <div class="park">
+                        {% for i in category %}
+                        <div class="park-card">
+                            <a href="facility/{{i.id}}">
+                                <span><img src="{{ i.Cat_Img.url }}" alt="{{ i.Cat_Name }}" class="park-image"></span>
+                                <h5 class="park-title">{{ i.Cat_Name }}</h5>
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+
+    <section class="latest-items section-padding fix">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-6 col-lg-7 col-md-9">
+                    <div class="section-tittle text-center line mb-70">
+                        <h2>Event Hub</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="latest-items-active">
+                {% for i in event %}
+                <div class="properties pb-30">
+                    <div class="properties-card">
+                        <div class="properties-img">
+                            <a href="eventview/{{i.id}}"><img src="{{ i.E_Img.url }}" style="height: 320px;" alt="{{ i.E_Name }}"></a>
+                        </div>
+                        <div class="properties-caption properties-caption2">
+                            <h3><a href="eventview/{{i.id}}">{{ i.E_Name }}</a></h3>
+                            <div class="properties-footer">
+                                <div class="price">
+                                    <span>Capacity: {{ i.E_Cpty }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section class="latest-items section-padding fix">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-6 col-lg-7 col-md-9">
+                    <div class="section-tittle text-center line mb-70">
+                        <h2>Testimonial's</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="latest-items-active">
+                {% for testimonial in testimonials %}
+                <div class="testimonial pb-30">
+                    <div class="testimonial-card">
+                        <div class="testimonial-caption testimonial-caption2">
+                            <div class="rating">
+                                <ul>
+                                    {% for star in "x"|ljust:testimonial.rating %}
+                                        <li><i class="fas fa-star"></i></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <p>{{ testimonial.Msg }}</p>
+                            <div class="testimonial-footer">
+                                <div class="author">
+                                    <p>{{ testimonial.Name }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+</main>
+{% include 'footer.html' %}
+{% endblock %}

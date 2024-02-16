@@ -1,0 +1,219 @@
+{% load static %}
+{% block content %}
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+<!-- Mirrored from preview.colorlib.com/theme/cakeshop/ by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 05 Jan 2024 17:10:24 GMT -->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="refresh" content="100">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Goovy Cove</title>
+    <meta name="description" content>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/icon/favicon.png' %}">   
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slicknav.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fontawesome-all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/themify-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slick.css' %}">
+    <link rel="stylesheet" href="{% static 'css/nice-select.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <script
+        nonce="15fbdeba-906a-4ab9-b726-37be8902ce83">(function (w, d) { !function (dp, dq, dr, ds) { dp[dr] = dp[dr] || {}; dp[dr].executed = []; dp.zaraz = { deferred: [], listeners: [] }; dp.zaraz.q = []; dp.zaraz._f = function (dt) { return async function () { var du = Array.prototype.slice.call(arguments); dp.zaraz.q.push({ m: dt, a: du }) } }; for (const dv of ["track", "set", "debug"]) dp.zaraz[dv] = dp.zaraz._f(dv); dp.zaraz.init = () => { var dw = dq.getElementsByTagName(ds)[0], dx = dq.createElement(ds), dy = dq.getElementsByTagName("title")[0]; dy && (dp[dr].t = dq.getElementsByTagName("title")[0].text); dp[dr].x = Math.random(); dp[dr].w = dp.screen.width; dp[dr].h = dp.screen.height; dp[dr].j = dp.innerHeight; dp[dr].e = dp.innerWidth; dp[dr].l = dp.location.href; dp[dr].r = dq.referrer; dp[dr].k = dp.screen.colorDepth; dp[dr].n = dq.characterSet; dp[dr].o = (new Date).getTimezoneOffset(); if (dp.dataLayer) for (const dC of Object.entries(Object.entries(dataLayer).reduce(((dD, dE) => ({ ...dD[1], ...dE[1] })), {}))) zaraz.set(dC[0], dC[1], { scope: "page" }); dp[dr].q = []; for (; dp.zaraz.q.length;) { const dF = dp.zaraz.q.shift(); dp[dr].q.push(dF) } dx.defer = !0; for (const dG of [localStorage, sessionStorage]) Object.keys(dG || {}).filter((dI => dI.startsWith("_zaraz_"))).forEach((dH => { try { dp[dr]["z_" + dH.slice(7)] = JSON.parse(dG.getItem(dH)) } catch { dp[dr]["z_" + dH.slice(7)] = dG.getItem(dH) } })); dx.referrerPolicy = "origin"; dx.src = "../../cdn-cgi/zaraz/sd0d9.js?z=" + btoa(encodeURIComponent(JSON.stringify(dp[dr]))); dw.parentNode.insertBefore(dx, dw) };["complete", "interactive"].includes(dq.readyState) ? zaraz.init() : dp.addEventListener("DOMContentLoaded", zaraz.init) }(w, d, "zarazData", "script"); })(window, document);</script>
+</head>
+
+<body class="body-bg">
+    <header>
+        <div class="header-area">
+            <div class="main-header ">
+                <div class="header-top">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="d-flex justify-content-between flex-wrap align-items-center main-head">
+                                    <div class="header-info-left d-none d-sm-block">
+                                        <ul class="header-social">
+                                            <li><a href="#"><i class="fab fa-facebook"></i></a></li>
+                                            <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                                            <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="logo">
+                                        <a href="../index" style="color:yellow; font-size: 30px; color:#ffc107;">Groovy
+                                            Cove</a>
+                                    </div>
+                                    <div class="header-info-right d-none d-lg-block">
+                                        {% if request.session.admin_id %}
+                                        <a href="../dashboard" class="btn_2">Admin Panel</a>
+                                        <a href="../logout" class="btn_2">Log Out</a>
+                                        {% elif request.session.staff_id %}
+                                        <a href="../dashboard" class="btn_2">Admin Panel</a>
+                                        <a href="../logout" class="btn_2">Log Out</a>
+                                        {% elif request.session.user_id %}
+                                        <i class="fa-regular fa-user profile" id="profile-icon"></i>
+                                        <div class="profile-popup" id="profile-popup">
+                                            <div class="card-header">
+                                                <div class="banner"></div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="profile-header">
+                                                    <div class="profil-logo">
+                                                        <img src="{{ cust.Cust_Img }}" />
+                                                    </div>
+                                                </div>
+                                                <div class="profile-body">
+                                                    <div class="username">
+                                                        {{ cust.Cust_Fname }} {{cust.Cust_Mname}}<span>#{{cust.id }}</span>
+                                                        <div class="badge">{{ user_data.user_type }}</div>
+                                                        <a href="editcust/{{ cust.id }}" class="cedit"><i class="fas fa-pen-to-square"></i></a>
+                                                    </div>
+                                                    <div class="basic-infos">
+                                                        <div class="category-title">About Me</div>
+                                                        <p>Date of Birth: {{ cust.Cust_Dob }}</p>
+                                                        <p>Pin: {{ cust.Cust_Pin }}</p>
+                                                        <p>{{ cust.Cust_State }}, {{ cust.Cust_City }}</p>
+                                                    </div>
+                                                    <div class="basic-infos">
+                                                        <div class="category-title">Member Since</div>
+                                                        <p>{{ user_data.join_date }}</p>
+                                                    </div>
+                                                    <div class="roles">
+                                                        <div class="category-title">Perks</div>
+                                                        {% for plan in plans %}
+                                                        <div class="roles-list">
+                                                            <div class="role">
+                                                                <div class="role-color" style="background: orange">
+                                                                </div>
+                                                                <p>{{ plan.Plan_name }}</p>
+                                                            </div>
+                                                        </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <a href="../eventpg" class="btn_2">Book Now</a>
+                                        <a href="../order" class="btn_2">Orders</a>
+                                        <a href="../logout" class="btn_2">Log Out</a>
+                                        {% else %}
+                                        <a href="../eventpg" class="btn_2">Book Now</a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-bottom  header-sticky">
+                    <div class="container-fluid">
+                        <div class="row justify-content-center">
+                            <div class="col-xl-12">
+
+                                <div class="main-menu d-none d-lg-block text-center">
+                                    <nav>
+                                        <ul id="navigation">
+                                            {% if request.session.admin_id %}
+                                            <li><a href="../index">Home</a></li>
+                                            <li><a href="">Park</a>
+                                                <ul class="submenu">
+                                                    {% for i in category %}
+                                                    <li><a href="../facility/{{i.id}}">{{ i.Cat_Name}}</a></li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </li>
+                                            <li><a href="../time">Timing & Rates</a></li>
+                                            <li><a href="../eventpg">Events</a></li>
+                                            <li><a href="../contact">Contact</a></li>
+                                            {% elif request.session.staff_id %}
+                                            <li><a href="../index">Home</a></li>
+                                            <li><a href="">Park</a>
+                                                <ul class="submenu">
+                                                    {% for i in category %}
+                                                    <li><a href="facility/{{i.id}}">{{ i.Cat_Name}}</a></li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </li>
+                                            <li><a href="../time">Timing & Rates</a></li>
+                                            <li><a href="../eventpg">Events</a></li>
+                                            <li><a href="../contact">Contact</a></li>
+                                            {% elif request.session.user_id %}
+                                            <li><a href="{% url 'index' %}">Home</a></li>
+                                            <li><a href="">Park</a>
+                                                <ul class="submenu">
+                                                    {% for i in category %}
+                                                    <li><a href="../facility/{{i.id}}">{{ i.Cat_Name}}</a></li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </li>
+                                            <li><a href="../time">Timing & Rates</a></li>
+                                            <li><a href="../eventpg">Events</a></li>
+                                            <li><a href="../contact">Contact</a></li>
+                                            {% else %}
+                                            <li><a href="../index">Home</a></li>
+                                            <li><a href="">Park</a>
+                                                <ul class="submenu">
+                                                    {% for i in category %}
+                                                    <li><a href="../facility/{{i.id}}">{{ i.Cat_Name}}</a></li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </li>
+                                            <li><a href="../time">Timing & Rates</a></li>
+                                            <li><a href="../eventpg">Events</a></li>
+                                            <li><a href="../contact">Contact</a></li>
+                                            <li><a href="../login">Login</a></li>
+                                            <li><a href="../register">Register</a></li>
+                                            {% endif %}
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="mobile_menu d-block d-lg-none"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <script>
+        var profilePopup = document.getElementById('profile-popup');
+        var profileIcon = document.getElementById('profile-icon');
+        var isOpen = false;
+    
+        profileIcon.addEventListener('click', function (event) {
+            isOpen = !isOpen;
+            if (isOpen) {
+                profilePopup.style.display = 'block';
+            } else {
+                profilePopup.style.display = 'none';
+            }
+            event.stopPropagation(); // Prevents event from bubbling up to the document
+        });
+    
+        document.addEventListener('click', function (event) {
+            if (isOpen && !profilePopup.contains(event.target) && event.target !== profileIcon) {
+                isOpen = false;
+                profilePopup.style.display = 'none';
+            }
+        });
+    
+        // Add scroll event listener
+        document.addEventListener('scroll', function (event) {
+            if (isOpen) {
+                isOpen = false;
+                profilePopup.style.display = 'none';
+            }
+        });
+    </script>
+    
+
+    {% endblock %}

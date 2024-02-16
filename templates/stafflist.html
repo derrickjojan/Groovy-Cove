@@ -1,0 +1,548 @@
+{% load static %}
+{% block content %}
+{% include 'admin.html' %}
+<html>
+<head>
+    <style>
+        body {
+            background-color: #2f323b;
+        }
+
+        .container {
+            font-size: 17px;
+            position: relative;
+            left: 15%;
+            top: 13%;
+            max-width: 1500px;
+            padding-top: 25px;
+            border-radius: 10px;
+            transition: left 0.9s ease;
+        }
+
+        #check:checked~.container {
+            position: relative;
+            left: 180px;
+            min-width: calc(85% - 10px);
+            transition: left 1.2s ease;
+        }
+
+        .header {
+            position: relative;
+            bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #ffc107;
+            border-radius: 2px;
+        }
+
+
+        .header h3 {
+            padding-left: 20px;
+            font-size: 30px;
+            font-weight: bold;
+            color: #ccc;
+            margin: 0;
+        }
+
+        .btn {
+            margin-left: 20px;
+            display: inline-block;
+            color: #ffc107;
+            font-size: 30px;
+            font-weight: bold;
+            position: relative;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .btttn {
+            margin-left: 20px;
+
+            display: inline-block;
+            color: #ffc107;
+            font-size: 30px;
+            font-weight: bold;
+            position: relative;
+            text-decoration: none;
+        }
+
+        .bttttn {
+            margin-left: 20px;
+
+            display: inline-block;
+            color: #ffc107;
+            font-size: 30px;
+            font-weight: bold;
+            position: relative;
+            text-decoration: none;
+        }
+
+        .bttn {
+            display: inline-block;
+            color: #ffc107;
+            font-size: 30px;
+            font-weight: bold;
+            position: relative;
+            text-decoration: none;
+        }
+
+        .bttttn:hover:before,
+        .btttn:hover:before,
+        .btn:hover:before,
+        .bttn:hover:before {
+            content: "Export(excel)";
+            position: absolute;
+            top: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .btn:hover:before {
+            content: "Create New";
+        }
+
+        .btttn:hover:before {
+            content: "Download";
+        }
+
+        .bttttn:hover:before {
+            content: "Print";
+        }
+
+        .table {
+            padding: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            color: #ffc107;
+            padding: 13px;
+            text-align: center;
+            border-bottom: 1px solid #6c757d;
+        }
+
+        th {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .dp {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dpbtn {
+            background-color: #000;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .dp:hover .dropbtn {
+            background-color: #ffc107;
+        }
+
+        .dp-content {
+            z-index: 1;
+        }
+
+        .dp-content a {
+            position: relative;
+            display: inline-block;
+            padding: 1px 10px;
+            font-size: 20px;
+            color: #ffc107;
+            text-decoration: none;
+            background-color: transparent;
+        }
+
+        .dp-content a:hover:before {
+            content: "Edit";
+            position: absolute;
+            top: calc(100% + 5px);
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .dp-content a.deactivate-link:hover:before {
+            content: "Deactivate";
+        }
+
+        .dp-content a.activate-link:hover:before {
+            content: "Activate";
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        {% if error_message %}
+        <script>
+            alert("{{ error_message }}");
+        </script>
+        {% endif %}
+        <div class="header">
+            <h3>Staff List</h3>
+            <div class="">
+                <a href="#" id="exportToExcel" onclick="exportToExcel()" class="bttn"><i
+                        class="fa-regular fa-file-excel"></i></a>
+                <a href="#" id="exportToPDF" onclick="exportToPDF()" class="btttn"><i
+                        class="fa-solid fa-download"></i></a>
+
+                <a href="#" id="printPDF" onclick="printAndClose()" class="bttttn"><i class="fa-solid fa-print"></i></a>
+                <a href="addstaff" class="btn"><i class="fa-solid fa-circle-plus"></i></a>
+            </div>
+        </div>
+        <div class="table">
+            <table id="salesTable">
+                <colgroup>
+                    <col width="5%">
+                    <col width="10%">
+                    <col width="15%">
+                    <col width="20%">
+                    <col width="20%">
+                    <col width="10%">
+                    <col width="20%" id="paymentIdColumn">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Staff id</th>
+                        <th>Staff Username</th>
+                        <th>Staff Name</th>
+                        <th>Staff Phone Number</th>
+                        <th>Status</th>
+                        <th id="paymentIdColumn">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in result %}
+                    <tr>
+                        <td>
+                            {{forloop.counter}}
+                        </td>
+                        <td>
+                            {{i.id}}
+                        </td>
+                        <td>
+                            {{ i.S_Username.username }} 
+                        </td>
+                        <td>
+                            {{i.S_Fname}} {{i.S_Mname}} {{i.S_Lname}}
+                        </td>
+                        <td>
+                            {{i.S_Phno}}
+                        </td>
+                        <td>
+                            {% if i.S_Status == '1' %}
+                            Active
+                            {% elif i.S_Status == '0' %}
+                            Deactive
+                            {% else %}
+                            Unknown Status
+                            {% endif %}
+                        </td>
+                        <td align="center" id="paymentIdColumn">
+                            <div class="dp-content">
+                                <a href="editstaff/{{ i.id }}" class="edit-link"><i class="fas fa-pen-to-square"></i></a>
+                                <a href="sdeactivate/{{i.id}}" class="deactivate-link"><i class="fas fa-user-minus"></i></a>
+                                <a href="sactivate/{{i.id}}" class="activate-link"><i class="fas fa-user-check"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        function exportToExcel() {
+            var table = document.getElementById('salesTable');
+
+            var wb = XLSX.utils.book_new();
+            var ws = XLSX.utils.table_to_sheet(table);
+
+            /* Add worksheet to the workbook */
+            XLSX.utils.book_append_sheet(wb, ws, "Staff List");
+
+            var wscols = [
+                { wch: 10 },
+                { wch: 15 },
+                { wch: 40 },
+                { wch: 20 },
+                { wch: 20 },
+                { wch: 20 },
+                { wch: 20 },
+                { wch: 20 },
+            ];
+            ws['!cols'] = wscols;
+
+            XLSX.writeFile(wb, 'Staff_List.xlsx');
+        }
+
+        function exportToPDF() {
+            // Get the content of the table
+            var table = document.getElementById('salesTable').cloneNode(true);
+
+            // Hide the "Payment id" column from the table for the PDF
+            var paymentIdHeader = table.querySelector('#paymentIdColumn');
+            if (paymentIdHeader) {
+                paymentIdHeader.style.display = 'none';
+                var rows = table.getElementsByTagName('tr');
+                for (var j = 0; j < rows.length; j++) {
+                    var paymentIdCell = rows[j].querySelector('#paymentIdColumn');
+                    if (paymentIdCell) {
+                        paymentIdCell.style.display = 'none';
+                    }
+                }
+            }
+
+            // Get today's date
+            var today = new Date();
+            var formattedDate = today.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            // Get the logo and tagline
+            var logoAndTagline = `
+        <div class="logo">
+            <h2 style="color:yellow; font-size: 40px; text-decoration: none; color:#ffc107;">GroovyCove</h2>
+            <f>Your Gateway to Unforgettable Experiences!</f>
+            <f>Ph: +1 255 565 2365</f>
+        </div>
+        <div class="footer">
+            <div class="date">${formattedDate}</div>
+        </div>
+    `;
+
+            // Combine the table content with the logo and tagline
+            var content = logoAndTagline + table.outerHTML;
+
+
+
+            // Style the content for the PDF (same as before)
+            var styledContent = `
+        <style>
+            body {
+                background-color: #2f323b;
+            }
+            .logo {
+                text-align: center;
+                margin-bottom: 30px;
+            }
+            .f {
+                display: block;
+                margin-bottom: 20px;
+                font-size: 20px;
+            }
+            .container {
+                font-size: 17px;
+                position: relative;
+                left: 0;
+                max-width: 1500px;
+                padding-top: 25px;
+                border-radius: 10px;
+                transition: left 0.9s ease;
+            }
+            #check:checked~.container {
+                position: relative;
+                left: 180px;
+                min-width: calc(85% - 10px);
+                transition: left 1.2s ease;
+            }
+            .header {
+                position: relative;
+                bottom: 20px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 15px;
+                border-bottom: 1px solid #ffc107;
+                border-radius: 2px;
+            }
+            .header h3 {
+                padding-left: 20px;
+                font-size: 30px;
+                font-weight: bold;
+                color: #ccc;
+                margin: 0;
+            }
+            .table {
+                padding: 15px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            td {
+                color: #000;
+                padding: 13px;
+                border: 1px solid #000;
+            }
+            th {
+                color: #000;
+                border: 1px solid #000;
+                font-weight: bold;
+            }
+        </style>
+        <div class="container">${content}</div>
+
+    `;
+
+            // Generate and save the PDF
+            var opt = {
+                margin: 10,
+                filename: 'Staff_List.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                html2pdf: {
+                    content: styledContent,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    margin: [10, 0], // Adjust the margin for the footer
+                    pagebreak: { mode: 'avoid-all' }, // Prevent page breaks in the footer
+                }
+            };
+            html2pdf().from(styledContent).set(opt).save();
+        }
+
+
+
+        function printAndClose() {
+    // Get the content of the table
+    var table = document.getElementById('salesTable').cloneNode(true);
+
+    // Hide the "Payment id" column from the table for the print view
+    var paymentIdHeader = table.querySelector('#paymentIdColumn');
+    if (paymentIdHeader) {
+        paymentIdHeader.style.display = 'none';
+        var rows = table.getElementsByTagName('tr');
+        for (var j = 0; j < rows.length; j++) {
+            var paymentIdCell = rows[j].querySelector('#paymentIdColumn');
+            if (paymentIdCell) {
+                paymentIdCell.style.display = 'none';
+            }
+        }
+    }
+
+    // Get today's date
+    var today = new Date();
+    var formattedDate = today.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+
+    // Get the logo and tagline
+    var logoAndTagline = `
+        <div class="logo">
+            <h2 style="color:yellow; font-size: 40px; text-decoration: none; color:#ffc107;">GroovyCove</h2>
+            <f>Your Gateway to Unforgettable Experiences!</f>
+            <f>Ph: +1 255 565 2365</f>
+        </div>
+        <div class="footer">
+            <div class="date">${formattedDate}</div>
+        </div>
+    `;
+
+    // Combine the table content with the logo and tagline
+    var content = logoAndTagline + table.outerHTML;
+
+    // Style the content for printing
+    var styledContent = `
+        <style>
+            body {
+            font-family: "Jost", sans-serif;
+
+                background-color: #2f323b;
+            }
+            .logo {
+                text-align: center;
+                margin-bottom: 30px;
+            }
+            .f {
+                display: block;
+                margin-bottom: 20px;
+                font-size: 20px;
+            }
+            .container {
+                font-size: 17px;
+                max-width: 1500px;
+                padding-top: 25px;
+                border-radius: 10px;
+            }
+            .header {
+                display: none; /* Hide header for printing */
+            }
+            .table {
+                padding: 15px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            td {
+                color: #000;
+                padding: 13px;
+                border: 1px solid #000;
+            }
+            th {
+                color: #000;
+                border: 1px solid #000;
+                font-weight: bold;
+            }
+        </style>
+        <div class="container">${content}</div>
+    `;
+
+    // Open a new window with the styled content for printing
+    var printWindow = window.open('', '_blank');
+    printWindow.document.write(styledContent);
+    printWindow.document.close();
+
+    // Wait for the content to be loaded, then print and handle closing the window
+    printWindow.onload = function() {
+        printWindow.focus();
+        printWindow.print();
+        setTimeout(function() {
+            printWindow.close();
+            window.location.href = 'staff'; // Redirect back after printing
+        }, ); // Delay the redirect by 1 second (1000 milliseconds)
+    };
+}
+    </script>
+</body>
+
+</html>
+{% endblock %}

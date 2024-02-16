@@ -1,0 +1,64 @@
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        .plan-container {
+            border: 2px solid;
+            border-radius: 20px;
+            display: inline-block;
+            margin-right: 50px;
+            padding: 20px;
+        }
+
+        .plan-table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .plan-table th,
+        .plan-table td {
+            border: 1px solid;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .plan-table th {
+            background-color: red;
+        }
+        .plan-container h2{
+            text-align: center;
+        }
+        .plan-table tr:first-child td {
+            padding-left: 80px;
+            padding-bottom: 20px;
+            text-align: center;  /* Center-align the content of the first <td> in each <tr> */
+        }
+    </style>
+</head>
+<body>
+    {% for result in results %}
+    <div class="plan-container">
+        <h2>{{ result.plan.P_Name }}</h2>
+
+        <table class="plan-table">
+            <colgroup>
+                <col style="width: 300px;">
+                <col style="width: 70px;">
+            </colgroup>
+            {% for item in result.description_list %}
+            {% if item %}
+            <tr>
+                {% for cell in item %}
+                <td>{{ cell }}</td>
+                {% endfor %}
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </table>
+    </div>
+    {% endfor %}
+</body>
+</html>
+{% endblock %}
